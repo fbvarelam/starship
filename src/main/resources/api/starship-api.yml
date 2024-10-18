@@ -1,0 +1,190 @@
+openapi: 3.0.3
+info:
+  title: Starship API
+  description: API for managing starships from movies and series.
+  version: 1.0.0
+tags:
+  - name: starship
+    description: Starships API
+servers:
+  - url: http://localhost:8080/api
+paths:
+  /starships:
+    get:
+      tags:
+        - starship
+      summary: Get all starships
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Page number
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          required: false
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: A list of starships
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StarshipResponse'
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                    example: 1
+        '500':
+          description: Internal Server Error
+
+    post:
+      tags:
+        - starship
+      summary: Create a new starship
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StarshipRequest'
+      responses:
+        '201':
+          description: starship created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StarshipResponse'
+        '400':
+          description: Bad Request
+
+  /starships/{id}:
+    get:
+      tags:
+        - starship
+      summary: Get a starship by ID
+      operationId: getStarshipById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the starship to retrieve
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: starship found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StarshipResponse'
+        '404':
+          description: starship not found
+
+    put:
+      tags:
+        - starship
+      summary: Update an existing starship
+      operationId: updateStarshipById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the starship to update
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StarshipRequest'
+      responses:
+        '200':
+          description: Starship updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StarshipResponse'
+        '404':
+          description: Starship not found
+        '400':
+          description: Bad Request
+
+    delete:
+      tags:
+        - starship
+      summary: Delete a starship
+      operationId: deleteStarshipById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the starship to delete
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: starship deleted
+        '404':
+          description: starship not found
+
+  /starships/search:
+    get:
+      tags:
+        - starship
+      summary: Search for starships by name
+      operationId: searchNavesByName
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: Substring to search in starship names
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of matching starships
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StarshipResponse'
+components:
+  schemas:
+    StarshipResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "X-Wing"
+        type:
+          type: string
+          example: "attack"
+    StarshipRequest:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+          example: "X-Wing"
+        type:
+          type: string
+          example: "attack"
