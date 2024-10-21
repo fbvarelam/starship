@@ -14,6 +14,7 @@ paths:
       tags:
         - starship
       summary: Get all starships
+      operationId: getAllStarships
       parameters:
         - name: page
           in: query
@@ -31,7 +32,7 @@ paths:
             default: 10
       responses:
         '200':
-          description: A list of starships
+          description: A paginated list of starships
           content:
             application/json:
               schema:
@@ -46,13 +47,32 @@ paths:
                   totalPages:
                     type: integer
                     example: 1
+                  size:
+                    type: integer
+                    example: 10
+                  number:
+                    type: integer
+                    example: 0
+                  numberOfElements:
+                    type: integer
+                    example: 10
+                  first:
+                    type: boolean
+                    example: true
+                  last:
+                    type: boolean
+                    example: false
         '500':
           description: Internal Server Error
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     post:
       tags:
         - starship
       summary: Create a new starship
+      operationId: createStarship
       requestBody:
         required: true
         content:
@@ -67,7 +87,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/StarshipResponse'
         '400':
-          description: Bad Request
+          description: Bad response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 
   /starships/{id}:
     get:
@@ -89,9 +119,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StarshipResponse'
-        '404':
-          description: starship not found
-
+        '400':
+          description: Starship not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     put:
       tags:
         - starship
@@ -117,11 +156,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StarshipResponse'
-        '404':
-          description: Starship not found
         '400':
-          description: Bad Request
-
+          description: Starship not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     delete:
       tags:
         - starship
@@ -137,9 +183,24 @@ paths:
       responses:
         '204':
           description: starship deleted
+        '400':
+          description: Bad response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         '404':
-          description: starship not found
-
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /starships/search:
     get:
       tags:
@@ -162,10 +223,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/StarshipResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 components:
   schemas:
     StarshipResponse:
       type: object
+      required:
+        - name
+        - type
       properties:
         id:
           type: integer
@@ -188,3 +258,10 @@ components:
         type:
           type: string
           example: "attack"
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
+        description:
+          type: string
