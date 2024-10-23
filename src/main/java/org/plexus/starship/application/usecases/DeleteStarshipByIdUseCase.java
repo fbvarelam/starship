@@ -1,5 +1,6 @@
 package org.plexus.starship.application.usecases;
 
+import org.plexus.starship.domain.exceptions.StarshipNotFoundException;
 import org.plexus.starship.domain.ports.in.DeleteStarshipByIdPort;
 import org.plexus.starship.domain.ports.out.DeleteStarshipByIdRepositoryPort;
 
@@ -13,7 +14,7 @@ public class DeleteStarshipByIdUseCase implements DeleteStarshipByIdPort {
 
 
     @Override
-    public void execute(long id) {
+    public void execute(long id) throws StarshipNotFoundException {
         deleteStarshipByIdRepositoryPort.execute(id);
     }
 }
