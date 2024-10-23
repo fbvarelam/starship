@@ -1,19 +1,21 @@
 package org.plexus.starship.infrastructure.rest.adapter;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.openapitools.api.StarshipApi;
-import org.openapitools.model.StarshipRequest;
 import org.openapitools.model.StarshipResponse;
+import org.plexus.starship.domain.exceptions.StarshipNotFoundException;
 import org.plexus.starship.domain.ports.in.*;
+import org.plexus.starship.infrastructure.rest.exceptions.StarshipNotFoundRestException;
 import org.plexus.starship.infrastructure.rest.mapper.RestMapper;
+import org.plexus.starship.infrastructure.rest.model.StarshipRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -31,53 +33,71 @@ public class StarshipController implements StarshipApi {
     private final RestMapper restMapper;
 
     @GetMapping
-    public ResponseEntity<Page<StarshipResponse>> getAllStarships(
-            @PageableDefault() Pageable pageable) {
+    public ResponseEntity<Page<StarshipResponse>> getAllStarships(@PageableDefault() final Pageable pageable) {
 
-        var starships = this.getStarshipsPort.execute(pageable);
-        var response = starships.map(this.restMapper::toResponse);
+        var response = this.getStarshipsPort.execute(pageable)
+                .map(this.restMapper::toResponse);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<StarshipResponse> createStarship(@Valid @RequestBody StarshipRequest request) {
-        var starshipSaved = this.createStarshipPort.execute(restMapper.toDomain(request));
+    public ResponseEntity<StarshipResponse> createStarship(@Valid @RequestBody final StarshipRequest request) {
+
+        var starshipSaved = this.createStarshipPort.execute(this.restMapper.toDomain(request));
         var response = this.restMapper.toResponse(starshipSaved);
 
         return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StarshipResponse> getStarshipById(@PathVariable Long id) {
-        var starship = this.getStarshipByIdPort.execute(id);
-        var response = this.restMapper.toResponse(starship);
+    public ResponseEntity<StarshipResponse> getStarshipById(@PathVariable final Long id) {
 
-        return ResponseEntity.ok(response);
+        try {
+            var starship = this.getStarshipByIdPort.execute(id);
+            var response = this.restMapper.toResponse(starship);
+
+            return ResponseEntity.ok(response);
+
+        } catch (StarshipNotFoundException e) {
+            throw new StarshipNotFoundRestException(e.getMessage());
+        }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<StarshipResponse> updateStarshipById(@Valid
-                                                               @PathVariable Long id, @RequestBody StarshipRequest request) {
+                                                               @PathVariable final Long id,
+                                                               @RequestBody final StarshipRequest request) {
+        try {
+            var starship = this.restMapper.toDomain(request);
 
-        var starship = this.restMapper.toDomain(request);
-        var starshipUpdated = this.updateStarshipByIdPort.execute(id, starship);
+            var starshipUpdated = this.updateStarshipByIdPort.execute(id, starship);
 
-        var response = this.restMapper.toResponse(starshipUpdated);
+            var response = this.restMapper.toResponse(starshipUpdated);
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
+
+        } catch (StarshipNotFoundException e) {
+            throw new StarshipNotFoundRestException(e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStarshipById(@PathVariable Long id) {
-        this.deleteStarshipByIdPort.execute(id);
+    public ResponseEntity<Void> deleteStarshipById(@PathVariable final Long id) {
+
+        try {
+            this.deleteStarshipByIdPort.execute(id);
+        } catch (StarshipNotFoundException e) {
+            throw new StarshipNotFoundRestException(e.getMessage());
+        }
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<StarshipResponse>> searchStarshipsByName(@Valid @RequestParam @NotBlank String name) {
-        var starships = this.getStarshipsByNamePort.execute(name);
-        var response = starships.stream()
+    public ResponseEntity<List<StarshipResponse>> searchStarshipsByName(@Valid @RequestParam @NotBlank final String name) {
+
+        var response = this.getStarshipsByNamePort.execute(name).stream()
                 .map(this.restMapper::toResponse)
                 .toList();
 

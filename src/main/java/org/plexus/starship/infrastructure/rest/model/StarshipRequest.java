@@ -1,11 +1,13 @@
 package org.plexus.starship.infrastructure.rest.model;
 
-import javax.validation.constraints.NotBlank;
+
+import jakarta.validation.constraints.NotBlank;
 
 public record StarshipRequest(
-        @NotBlank
+
+        @NotBlank(message = "name field cannot be blank")
         String name,
-        @NotBlank
+        @NotBlank(message = "type field cannot be blank")
         String type
 ) {
 }

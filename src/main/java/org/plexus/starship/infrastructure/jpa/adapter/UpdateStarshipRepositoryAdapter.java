@@ -6,6 +6,8 @@ import org.plexus.starship.infrastructure.jpa.mapper.JPARepositoryMapper;
 import org.plexus.starship.infrastructure.jpa.repositories.StarshipJPARepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UpdateStarshipRepositoryAdapter implements UpdateStarshipRepositoryPort {
 
@@ -18,12 +20,16 @@ public class UpdateStarshipRepositoryAdapter implements UpdateStarshipRepository
     }
 
     @Override
-    public Starship execute(final long id, final Starship starship) {
-        var entity = this.jpaRepositoryMapper.toEntity(starship);
-        entity.setId(id);
+    public Optional<Starship> execute(final long id, final Starship starship) {
 
-        var starshipEntity = this.starshipJPARepository.save(entity);
+        return this.starshipJPARepository.findById(id)
+                .map(starshipEntity -> {
+                    starshipEntity.setName(starship.name());
+                    starshipEntity.setType(starship.type());
+                    return starshipEntity;
 
-        return this.jpaRepositoryMapper.toDomain(starshipEntity);
+                }).map(starshipJPARepository::save)
+                .map(jpaRepositoryMapper::toDomain);
+
     }
 }
