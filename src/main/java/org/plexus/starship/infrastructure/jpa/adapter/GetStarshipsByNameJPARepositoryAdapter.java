@@ -4,6 +4,7 @@ import org.plexus.starship.domain.Starship;
 import org.plexus.starship.domain.ports.out.StarshipsByNameRepositoryPort;
 import org.plexus.starship.infrastructure.jpa.mapper.JPARepositoryMapper;
 import org.plexus.starship.infrastructure.jpa.repositories.StarshipJPARepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,9 @@ public class GetStarshipsByNameJPARepositoryAdapter implements StarshipsByNameRe
     }
 
     @Override
-    public List<Starship> execute(String name) {
+    @Cacheable(cacheNames = "starshipsByName", key = "#name")
+    public List<Starship> execute(final String name) {
+
         return this.starshipJPARepository.findByNameContainingIgnoreCase(name)
                 .stream()
                 .map(this.jpaRepositoryMapper::toDomain)
