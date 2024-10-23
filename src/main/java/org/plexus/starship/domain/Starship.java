@@ -1,5 +1,5 @@
 package org.plexus.starship.domain;
 
-public record Starship(String name,
+public record Starship(int id, String name,
                        String type) {
 }
