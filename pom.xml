@@ -15,7 +15,7 @@
     <description>starship</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>22</java.version>
         <openapi-generator-maven-plugin.version>7.8.0</openapi-generator-maven-plugin.version>
         <swagger-annotations.version>2.2.19</swagger-annotations.version>
         <open-api.file-contract>starship-api.yml</open-api.file-contract>
