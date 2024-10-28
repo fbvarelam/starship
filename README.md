@@ -1,5 +1,9 @@
 # Starship API
 
+## Author
+
+- **Fernando Varela Martínez**
+
 ## Overview
 
 The Starship API is a RESTful service for managing starships from movies and series. It allows users to create,
