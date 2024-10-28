@@ -1,18 +1,18 @@
 package org.plexus.starship.infrastructure.jpa.adapter;
 
 import org.plexus.starship.domain.Starship;
-import org.plexus.starship.domain.ports.out.CreateStarshipRepositoryPort;
+import org.plexus.starship.domain.ports.out.NewStarshipRepositoryPort;
 import org.plexus.starship.infrastructure.jpa.mapper.JPARepositoryMapper;
 import org.plexus.starship.infrastructure.jpa.repositories.StarshipJPARepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreateStarshipRepositoryAdapter implements CreateStarshipRepositoryPort {
+public class NewStarshipRepositoryAdapter implements NewStarshipRepositoryPort {
 
     private final StarshipJPARepository starshipJPARepository;
     private final JPARepositoryMapper jpaRepositoryMapper;
 
-    public CreateStarshipRepositoryAdapter(StarshipJPARepository starshipJPARepository, JPARepositoryMapper jpaRepositoryMapper) {
+    public NewStarshipRepositoryAdapter(StarshipJPARepository starshipJPARepository, JPARepositoryMapper jpaRepositoryMapper) {
         this.starshipJPARepository = starshipJPARepository;
         this.jpaRepositoryMapper = jpaRepositoryMapper;
     }

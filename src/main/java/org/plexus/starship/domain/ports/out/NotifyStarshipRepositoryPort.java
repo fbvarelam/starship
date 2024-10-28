@@ -1,7 +1,7 @@
-package org.plexus.starship.domain.ports.in;
+package org.plexus.starship.domain.ports.out;
 
 import org.plexus.starship.domain.Starship;
 
-public interface CreateStarshipPort {
+public interface NotifyStarshipRepositoryPort {
     Starship execute(final Starship starship);
 }
