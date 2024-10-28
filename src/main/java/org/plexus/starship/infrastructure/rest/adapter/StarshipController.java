@@ -12,6 +12,7 @@ import org.plexus.starship.domain.ports.in.GetStarshipsByNamePort;
 import org.plexus.starship.domain.ports.in.GetStarshipsPort;
 import org.plexus.starship.domain.ports.in.UpdateStarshipByIdPort;
 import org.plexus.starship.domain.ports.out.NewStarshipRepositoryPort;
+import org.plexus.starship.domain.ports.out.NotifyStarshipRepositoryPort;
 import org.plexus.starship.infrastructure.rest.exceptions.StarshipNotFoundRestException;
 import org.plexus.starship.infrastructure.rest.mapper.RestMapper;
 import org.plexus.starship.infrastructure.rest.model.StarshipRequest;
@@ -42,6 +43,7 @@ public class StarshipController implements StarshipApi {
     private final NewStarshipRepositoryPort newStarshipRepositoryPort;
     private final UpdateStarshipByIdPort updateStarshipByIdPort;
     private final GetStarshipsByNamePort getStarshipsByNamePort;
+    private final NotifyStarshipRepositoryPort notifyStarshipRepositoryPort;
 
     private final RestMapper restMapper;
 
@@ -51,6 +53,8 @@ public class StarshipController implements StarshipApi {
         var response = this.getStarshipsPort.execute(pageable)
                 .map(this.restMapper::toResponse);
 
+        this.notifyStarshipRepositoryPort.execute("Get all starships");
+
         return ResponseEntity.ok(response);
     }
 
@@ -59,6 +63,9 @@ public class StarshipController implements StarshipApi {
 
         var starship = this.restMapper.toDomain(request);
         var starshipSaved = this.newStarshipRepositoryPort.execute(starship);
+
+        this.notifyStarshipRepositoryPort.execute("Create starship");
+
         var response = this.restMapper.toResponse(starshipSaved);
 
         return ResponseEntity.status(201).body(response);
@@ -69,6 +76,8 @@ public class StarshipController implements StarshipApi {
 
         try {
             var starship = this.getStarshipByIdPort.execute(id);
+            this.notifyStarshipRepositoryPort.execute("Get starship by id");
+
             var response = this.restMapper.toResponse(starship);
 
             return ResponseEntity.ok(response);
@@ -78,7 +87,6 @@ public class StarshipController implements StarshipApi {
         }
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<StarshipResponse> updateStarshipById(@Valid
                                                                @PathVariable final Long id,
@@ -86,6 +94,9 @@ public class StarshipController implements StarshipApi {
         try {
             var starship = this.restMapper.toDomain(request);
             var starshipUpdated = this.updateStarshipByIdPort.execute(id, starship);
+
+            this.notifyStarshipRepositoryPort.execute("Update starship by id");
+
             var response = this.restMapper.toResponse(starshipUpdated);
 
             return ResponseEntity.ok(response);
@@ -100,6 +111,8 @@ public class StarshipController implements StarshipApi {
 
         try {
             this.deleteStarshipByIdPort.execute(id);
+            this.notifyStarshipRepositoryPort.execute("Delete starship by id");
+
         } catch (StarshipNotFoundException e) {
             throw new StarshipNotFoundRestException(e.getMessage());
         }
@@ -112,6 +125,8 @@ public class StarshipController implements StarshipApi {
         var response = this.getStarshipsByNamePort.execute(name).stream()
                 .map(this.restMapper::toResponse)
                 .toList();
+
+        this.notifyStarshipRepositoryPort.execute("Search starship by name");
 
         return ResponseEntity.ok(response);
     }
