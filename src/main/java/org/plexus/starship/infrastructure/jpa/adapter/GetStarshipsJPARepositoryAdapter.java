@@ -13,13 +13,13 @@ public class GetStarshipsJPARepositoryAdapter implements StarshipsRepositoryPort
     private final StarshipJPARepository starshipJPARepository;
     private final JPARepositoryMapper jpaRepositoryMapper;
 
-    public GetStarshipsJPARepositoryAdapter(StarshipJPARepository starshipJPARepository, JPARepositoryMapper jpaRepositoryMapper) {
+    public GetStarshipsJPARepositoryAdapter(final StarshipJPARepository starshipJPARepository, final JPARepositoryMapper jpaRepositoryMapper) {
         this.starshipJPARepository = starshipJPARepository;
         this.jpaRepositoryMapper = jpaRepositoryMapper;
     }
 
     @Override
-    public Page<Starship> execute(Pageable pageable) {
+    public Page<Starship> execute(final Pageable pageable) {
         return this.starshipJPARepository.findAll(pageable)
                 .map(this.jpaRepositoryMapper::toDomain);
     }

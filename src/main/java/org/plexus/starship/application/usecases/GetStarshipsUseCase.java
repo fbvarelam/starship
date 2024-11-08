@@ -10,7 +10,7 @@ public class GetStarshipsUseCase implements GetStarshipsPort {
 
     private final StarshipsRepositoryPort starshipsRepositoryPort;
 
-    public GetStarshipsUseCase(StarshipsRepositoryPort starshipsRepositoryPort) {
+    public GetStarshipsUseCase(final StarshipsRepositoryPort starshipsRepositoryPort) {
         this.starshipsRepositoryPort = starshipsRepositoryPort;
     }
 

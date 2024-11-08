@@ -10,9 +10,9 @@ import java.util.Optional;
 
 public interface StarshipJPARepository extends CrudRepository<StarshipEntity, Long> {
 
-    Optional<StarshipEntity> findById(long id);
+    Optional<StarshipEntity> findById(final long id);
 
-    Page<StarshipEntity> findAll(Pageable pageable);
+    Page<StarshipEntity> findAll(final Pageable pageable);
 
-    List<StarshipEntity> findByNameContainingIgnoreCase(String name);
+    List<StarshipEntity> findByNameContainingIgnoreCase(final String name);
 }

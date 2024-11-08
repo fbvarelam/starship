@@ -10,12 +10,12 @@ public class GetStarshipsByNamePortUseCase implements GetStarshipsByNamePort {
 
     private final StarshipsByNameRepositoryPort starshipsByNameRepositoryPort;
 
-    public GetStarshipsByNamePortUseCase(StarshipsByNameRepositoryPort starshipsByNameRepositoryPort) {
+    public GetStarshipsByNamePortUseCase(final StarshipsByNameRepositoryPort starshipsByNameRepositoryPort) {
         this.starshipsByNameRepositoryPort = starshipsByNameRepositoryPort;
     }
 
     @Override
     public List<Starship> execute(final String name) {
-        return starshipsByNameRepositoryPort.execute(name);
+        return this.starshipsByNameRepositoryPort.execute(name);
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class LoggingAspect {
 
     @Before("execution(* org.plexus.starship.infrastructure.rest.adapter.StarshipController.getStarshipById(..)) && args(id)")
-    public void logIfNegativeId(Long id) {
+    public void logIfNegativeId(final long id) {
         if (id < 0) {
             log.warn("Request for starship with negative id: {}", id);
         }

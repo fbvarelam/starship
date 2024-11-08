@@ -50,7 +50,7 @@ public class StarshipController implements StarshipApi {
     @GetMapping
     public ResponseEntity<Page<StarshipResponse>> getAllStarships(@PageableDefault() final Pageable pageable) {
 
-        var response = this.getStarshipsPort.execute(pageable)
+        final var response = this.getStarshipsPort.execute(pageable)
                 .map(this.restMapper::toResponse);
 
         this.notifyStarshipRepositoryPort.execute("Get all starships");
@@ -61,12 +61,12 @@ public class StarshipController implements StarshipApi {
     @PostMapping
     public ResponseEntity<StarshipResponse> createStarship(@Valid @RequestBody final StarshipRequest request) {
 
-        var starship = this.restMapper.toDomain(request);
-        var starshipSaved = this.newStarshipRepositoryPort.execute(starship);
+        final var starship = this.restMapper.toDomain(request);
+        final var starshipSaved = this.newStarshipRepositoryPort.execute(starship);
 
         this.notifyStarshipRepositoryPort.execute("Create starship");
 
-        var response = this.restMapper.toResponse(starshipSaved);
+        final var response = this.restMapper.toResponse(starshipSaved);
 
         return ResponseEntity.status(201).body(response);
     }
@@ -75,10 +75,10 @@ public class StarshipController implements StarshipApi {
     public ResponseEntity<StarshipResponse> getStarshipById(@PathVariable final Long id) {
 
         try {
-            var starship = this.getStarshipByIdPort.execute(id);
+            final var starship = this.getStarshipByIdPort.execute(id);
             this.notifyStarshipRepositoryPort.execute("Get starship by id");
 
-            var response = this.restMapper.toResponse(starship);
+            final var response = this.restMapper.toResponse(starship);
 
             return ResponseEntity.ok(response);
 
@@ -92,12 +92,12 @@ public class StarshipController implements StarshipApi {
                                                                @PathVariable final Long id,
                                                                @RequestBody final StarshipRequest request) {
         try {
-            var starship = this.restMapper.toDomain(request);
-            var starshipUpdated = this.updateStarshipByIdPort.execute(id, starship);
+            final var starship = this.restMapper.toDomain(request);
+            final var starshipUpdated = this.updateStarshipByIdPort.execute(id, starship);
 
             this.notifyStarshipRepositoryPort.execute("Update starship by id");
 
-            var response = this.restMapper.toResponse(starshipUpdated);
+            final var response = this.restMapper.toResponse(starshipUpdated);
 
             return ResponseEntity.ok(response);
 
@@ -122,7 +122,7 @@ public class StarshipController implements StarshipApi {
     @GetMapping("/search")
     public ResponseEntity<List<StarshipResponse>> searchStarshipsByName(@Valid @RequestParam @NotBlank final String name) {
 
-        var response = this.getStarshipsByNamePort.execute(name).stream()
+        final var response = this.getStarshipsByNamePort.execute(name).stream()
                 .map(this.restMapper::toResponse)
                 .toList();
 

@@ -9,7 +9,7 @@ public class UpdateStarshipByIdUseCase implements UpdateStarshipByIdPort {
 
     private final UpdateStarshipRepositoryPort updateStarshipRepositoryPort;
 
-    public UpdateStarshipByIdUseCase(UpdateStarshipRepositoryPort updateStarshipRepositoryPort) {
+    public UpdateStarshipByIdUseCase(final UpdateStarshipRepositoryPort updateStarshipRepositoryPort) {
         this.updateStarshipRepositoryPort = updateStarshipRepositoryPort;
     }
 

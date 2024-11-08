@@ -13,12 +13,12 @@ public class StarshipProducerAdapter implements NotifyStarshipRepositoryPort {
     @Value("${kafka.starship.topic}")
     private String topic;
 
-    public StarshipProducerAdapter(KafkaTemplate<String, String> kafkaTemplate) {
+    public StarshipProducerAdapter(final KafkaTemplate<String, String> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
     @Override
-    public void execute(String message) {
-        kafkaTemplate.send(topic, message);
+    public void execute(final String message) {
+        this.kafkaTemplate.send(this.topic, message);
     }
 }

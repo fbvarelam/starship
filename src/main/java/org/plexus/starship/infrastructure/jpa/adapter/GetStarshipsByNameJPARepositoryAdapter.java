@@ -15,7 +15,7 @@ public class GetStarshipsByNameJPARepositoryAdapter implements StarshipsByNameRe
     private final StarshipJPARepository starshipJPARepository;
     private final JPARepositoryMapper jpaRepositoryMapper;
 
-    public GetStarshipsByNameJPARepositoryAdapter(StarshipJPARepository starshipJPARepository, JPARepositoryMapper jpaRepositoryMapper) {
+    public GetStarshipsByNameJPARepositoryAdapter(final StarshipJPARepository starshipJPARepository, final JPARepositoryMapper jpaRepositoryMapper) {
         this.starshipJPARepository = starshipJPARepository;
         this.jpaRepositoryMapper = jpaRepositoryMapper;
     }

@@ -15,13 +15,13 @@ public class GetStarshipByIdJPARepositoryAdapter implements StarshipByIdReposito
     private final JPARepositoryMapper jpaRepositoryMapper;
 
 
-    public GetStarshipByIdJPARepositoryAdapter(StarshipJPARepository starshipJPARepository, JPARepositoryMapper jpaRepositoryMapper) {
+    public GetStarshipByIdJPARepositoryAdapter(final StarshipJPARepository starshipJPARepository, final JPARepositoryMapper jpaRepositoryMapper) {
         this.starshipJPARepository = starshipJPARepository;
         this.jpaRepositoryMapper = jpaRepositoryMapper;
     }
 
     @Override
-    public Optional<Starship> execute(long id) {
+    public Optional<Starship> execute(final long id) {
         return this.starshipJPARepository.findById(id)
                 .map(this.jpaRepositoryMapper::toDomain);
     }

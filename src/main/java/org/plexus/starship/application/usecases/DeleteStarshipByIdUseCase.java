@@ -8,13 +8,13 @@ public class DeleteStarshipByIdUseCase implements DeleteStarshipByIdPort {
 
     public final DeleteStarshipByIdRepositoryPort deleteStarshipByIdRepositoryPort;
 
-    public DeleteStarshipByIdUseCase(DeleteStarshipByIdRepositoryPort deleteStarshipByIdRepositoryPort) {
+    public DeleteStarshipByIdUseCase(final DeleteStarshipByIdRepositoryPort deleteStarshipByIdRepositoryPort) {
         this.deleteStarshipByIdRepositoryPort = deleteStarshipByIdRepositoryPort;
     }
 
 
     @Override
-    public void execute(long id) throws StarshipNotFoundException {
-        deleteStarshipByIdRepositoryPort.execute(id);
+    public void execute(final long id) throws StarshipNotFoundException {
+        this.deleteStarshipByIdRepositoryPort.execute(id);
     }
 }

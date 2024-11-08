@@ -27,9 +27,8 @@ public class UpdateStarshipRepositoryAdapter implements UpdateStarshipRepository
                     starshipEntity.setName(starship.name());
                     starshipEntity.setType(starship.type());
                     return starshipEntity;
-
-                }).map(starshipJPARepository::save)
-                .map(jpaRepositoryMapper::toDomain);
+                }).map(this.starshipJPARepository::save)
+                .map(this.jpaRepositoryMapper::toDomain);
 
     }
 }

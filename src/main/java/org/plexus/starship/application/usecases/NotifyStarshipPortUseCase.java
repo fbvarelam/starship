@@ -7,12 +7,12 @@ public class NotifyStarshipPortUseCase implements NotifyStarshipPort {
 
     private final NotifyStarshipRepositoryPort notifyStarshipRepositoryPort;
 
-    public NotifyStarshipPortUseCase(NotifyStarshipRepositoryPort notifyStarshipRepositoryPort) {
+    public NotifyStarshipPortUseCase(final NotifyStarshipRepositoryPort notifyStarshipRepositoryPort) {
         this.notifyStarshipRepositoryPort = notifyStarshipRepositoryPort;
     }
 
     @Override
     public void execute(final String message) {
-        notifyStarshipRepositoryPort.execute(message);
+        this.notifyStarshipRepositoryPort.execute(message);
     }
 }

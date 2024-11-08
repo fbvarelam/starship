@@ -8,7 +8,7 @@ public class NewStarshipUseCase implements NewStarshipPort {
 
     private final NewStarshipRepositoryPort newStarshipRepositoryPort;
 
-    public NewStarshipUseCase(NewStarshipRepositoryPort newStarshipRepositoryPort) {
+    public NewStarshipUseCase(final NewStarshipRepositoryPort newStarshipRepositoryPort) {
         this.newStarshipRepositoryPort = newStarshipRepositoryPort;
     }
 

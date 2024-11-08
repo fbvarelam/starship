@@ -9,7 +9,7 @@ public class GetStarshipByIdUseCase implements GetStarshipByIdPort {
 
     private final StarshipByIdRepositoryPort starshipByIdRepositoryPort;
 
-    public GetStarshipByIdUseCase(StarshipByIdRepositoryPort starshipByIdRepositoryPort) {
+    public GetStarshipByIdUseCase(final StarshipByIdRepositoryPort starshipByIdRepositoryPort) {
         this.starshipByIdRepositoryPort = starshipByIdRepositoryPort;
     }
 
