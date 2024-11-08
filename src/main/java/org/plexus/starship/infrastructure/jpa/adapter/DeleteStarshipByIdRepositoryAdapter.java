@@ -10,15 +10,15 @@ public class DeleteStarshipByIdRepositoryAdapter implements DeleteStarshipByIdRe
 
     private final StarshipJPARepository starshipJPARepository;
 
-    public DeleteStarshipByIdRepositoryAdapter(StarshipJPARepository starshipJPARepository) {
+    public DeleteStarshipByIdRepositoryAdapter(final StarshipJPARepository starshipJPARepository) {
         this.starshipJPARepository = starshipJPARepository;
     }
 
     @Override
-    public void execute(long id) throws StarshipNotFoundException {
-        starshipJPARepository.findById(id)
+    public void execute(final long id) throws StarshipNotFoundException {
+        var starshipEntity = this.starshipJPARepository.findById(id)
                 .orElseThrow(() -> new StarshipNotFoundException("Starship not found"));
 
-        starshipJPARepository.deleteById(id);
+        this.starshipJPARepository.deleteById(starshipEntity.getId());
     }
 }
